@@ -1,0 +1,14 @@
+<div class="div form-group" *ngIf="InputByFileFlag=='checked'">
+                        <label style="text-align: inherit;" class="input-title2">File URL</label>
+                        <input id="input" type="text" size="30" pInputText [(ngModel)]="fileName" readonly>
+                        <label class="custom-file-upload ">
+                            <input (change)="onFileSelect($event.target)" class="file-upload-input" type="file" #csvFile
+                                size="40"> BROWSE
+                        </label>
+                        <div>
+                            <button class="btn btn-primary upload" type="button"
+                                (click)="fileDataRxtraction()">UPLOAD</button>
+                        </div>
+
+
+                    </div>
