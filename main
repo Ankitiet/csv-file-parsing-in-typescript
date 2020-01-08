@@ -1,0 +1,61 @@
+   import { Component, OnInit, Input } from '@angular/core';
+import { MenuItem } from 'primeng/primeng';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { HttpHelperService } from 'src/app/shared/http-helper.service';
+import { DatePipe } from '@angular/common';
+
+@Component({
+  selector: 'app-view-policy-group',
+  templateUrl: './view-policy-group.component.html',
+  styleUrls: ['./view-policy-group.component.scss']
+})
+export class Main implements OnInit {
+  public assumptionFileData:any=[];
+   
+   onFileLoad(fileLoadedEvent) {
+     this.tableData=[]
+     const csvSeparator = ';';
+     const textFromFileLoaded = fileLoadedEvent.target.result;
+     this.csvContent = textFromFileLoaded;
+     const txt = textFromFileLoaded;
+     const csv = [];
+     const lines = txt.split('\n');
+     lines.forEach(element => {
+       const cols: string[] = element.split(csvSeparator);
+       csv.push(cols);
+     });
+     this.parsedCsv = csv;
+     // demo output as alert
+     var output: string="";
+     csv.forEach(row => {
+       output += "\n";
+       var colNo = 0;
+       row.forEach(col => {
+         if (colNo>0) output += " | ";
+         output += col;
+         colNo++;
+         let a=col.split(',')
+         this.tableData.push({'periodNumber':a[0],'ratio':a[1]})
+      
+   
+       });
+     });
+     localStorage.setItem('data', JSON.stringify(this.tableData));
+     console.log(this.tableData)
+   }
+   
+   onFileSelect(input: HTMLInputElement) {
+     const files = input.files;
+     this.fileName=files[0].name
+    if (files && files.length) {
+          this.fileToRead = files[0];
+         this.fileReader = new FileReader();
+         this.fileReader.onload = this.onFileLoad;
+         this.fileReader.readAsText( this.fileToRead, "UTF-8");
+         console.log(this.fileReader)
+        
+        
+    }
+   
+   }
+   
